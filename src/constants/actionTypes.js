@@ -17,6 +17,9 @@ export const SAVE_ISSUES_ERROR = 'SAVE_ISSUES_ERROR';
 export const USER_LOGIN = 'USER_LOGIN';
 export const USER_LOGOUT = 'USER_LOGOUT';
 
+// uservotes
+export const USERVOTES_ADD = 'USERVOTES_ADD';
+export const USERVOTES_CLEAR = 'USERVOTES_CLEAR';
 
 // vote
 

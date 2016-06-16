@@ -20,17 +20,19 @@ function setLoginUser(user) {
   return dispatch => {
     const userData = user.providerData[0];
     console.info('Logged in as', userData.uid, userData)
+    dispatch({
+      type: types.USER_LOGIN,
+      payload: userData
+    })
+
     userRef = firebase.database().ref(`users/${userData.uid}`);
     userListener = userRef.on('value', dataSnapshot => {
-      console.info('Updating user object...')
+      console.info('Updating userVotes object...')
       const voteData = dataSnapshot.child('votes').val();
-      const payload = Object.assign({}, userData, {
-        votes: voteData
-      })
       dispatch({
-        type: types.USER_LOGIN,
-        payload
-      })
+        type: types.USERVOTES_ADD,
+        payload: voteData
+      });
     });
   }
 }
@@ -58,9 +60,8 @@ export function logout() {
     firebase.auth().signOut()
       .then(user => {
         userRef.off('value', userListener);
-        dispatch({
-          type: types.USER_LOGOUT
-        });
+        dispatch({ type: types.USER_LOGOUT });
+        dispatch({ type: types.USERVOTES_CLEAR });
         console.log('Logout successful');
       });
   }
