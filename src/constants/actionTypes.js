@@ -14,10 +14,8 @@ export const SAVE_ISSUES_ERROR = 'SAVE_ISSUES_ERROR';
 
 // login
 
-export const REQUEST_USER = 'REQUEST_USER';
-export const RECEIVE_USER = 'RECEIVE_USER';
-export const SET_LOGIN_USER = 'SET_LOGIN_USER';
-export const UPSERT_USER = 'UPSERT_USER';
+export const USER_LOGIN = 'USER_LOGIN';
+export const USER_LOGOUT = 'USER_LOGOUT';
 
 
 // vote

@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 const LoginButton = (props) => {
     const classNames = 'btn btn-default navbar-btn navbar-right';
