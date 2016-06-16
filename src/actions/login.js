@@ -2,63 +2,67 @@ import { browserHistory } from 'react-router';
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
+// References for our Firebase listener
+let userListener;
+let userRef;
+
 export function checkLoginUser() {
   return (dispatch) => {
     firebase.auth().onAuthStateChanged(user => {
       user
-      ? dispatch(setLoginUser(user.providerData[0]))
-      : console.log('User not logged in')
+        ? dispatch(setLoginUser(user))
+        : console.log('User not logged in')
     })
   }
 }
 
-export function setLoginUser(user) {
-  //console.log('set login user', user.uid)
-  return (dispatch) => {
+function setLoginUser(user) {
+  return dispatch => {
+    const userData = user.providerData[0];
+    console.info('Logged in as', userData.uid, userData)
     dispatch({
-      type: types.SET_LOGIN_USER,
-      user
+      type: types.USER_LOGIN,
+      payload: userData
+    })
+
+    userRef = firebase.database().ref(`users/${userData.uid}`);
+    userListener = userRef.on('value', dataSnapshot => {
+      console.info('Updating userVotes object...')
+      const voteData = dataSnapshot.child('votes').val();
+      dispatch({
+        type: types.USERVOTES_ADD,
+        payload: voteData
+      });
     });
-  };
+  }
 }
 
-export function loginToGithub() {
+export function login() {
   return (dispatch) => {
     const provider = new firebase.auth.GithubAuthProvider();
     return firebase.auth().signInWithPopup(provider)
       .then(data => {
-        console.log('Login successful. User: ', data.user.uid)
-        return data;
+        // Check if we have an error object back
+        if (data.code) {
+          Promise.reject(data);
+        } else {
+          dispatch(setLoginUser(data.user))
+        }
       })
       .catch(error => {
-        console.log('Error logging in: ', error)
+        console.error('Error logging in: ', error);
       });
   }
 }
 
-export function logoutFromGithub() {
+export function logout() {
   return (dispatch) => {
     firebase.auth().signOut()
       .then(user => {
-        dispatch(setLoginUser(user));
+        userRef.off('value', userListener);
+        dispatch({ type: types.USER_LOGOUT });
+        dispatch({ type: types.USERVOTES_CLEAR });
         console.log('Logout successful');
       });
-  }
-}
-
-
-export function upsertUser(data) {
-  return dispatch => {
-    dispatch({
-      type: types.UPSERT_USER,
-    });
-    // this is not ideal because it will overwrite user data on login
-    // At this stage I don't think we want to pass any values but
-    // I don't seem to find the right firebase method to just create the data model.
-    // On voting on an issue this path would be updated with an extra node made
-    // with the issue-id and a boolean value of true (for "voted")
-    return firebase.database().ref('users/' + data.user.uid + '/votes/').update({
-      issue_id: false
-    })
   }
 }

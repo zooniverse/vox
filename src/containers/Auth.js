@@ -1,53 +1,43 @@
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { checkLoginUser, setLoginUser, loginToGithub, logoutFromGithub, upsertUser } from '../actions/login';
+import { bindActionCreators } from 'redux'
+import * as loginActions from '../actions/login';
 
 import LoginButton from '../components/LoginButton';
 import LogoutButton from '../components/LogoutButton';
 
 class Auth extends Component {
 
-  constructor() {
-    super();
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-  }
-
   componentDidMount() {
-    if (!this.props.initialised) {
-      this.props.dispatch(checkLoginUser(this.props.user));
-    }
-  }
-
-  login() {
-    const { dispatch } = this.props;
-    return this.props.dispatch(loginToGithub())
-      .then(user => {dispatch(upsertUser(user))});
-  }
-
-  logout() {
-    this.props.dispatch(logoutFromGithub());
+    this.props.actions.checkLoginUser(this.props.user);
   }
 
   render() {
-    return (this.props.user)
-    ? <LogoutButton user={this.props.user.displayName} logout={this.logout} />
-    : <LoginButton login={this.login} />;
+    const { user, actions } = this.props;
+    return (user && user.displayName)
+      ? <LogoutButton user={user.displayName} logout={actions.logout} />
+      : <LoginButton login={actions.login} />;
   }
 }
 
 Auth.propTypes = {
   user: PropTypes.object,
-  initialised: PropTypes.bool
 };
+
 Auth.defaultProps = {
-  user: null,
-  initialised: false
+  user: {},
 };
+
 function mapStateToProps(state, ownProps) {
   return {
-    user: state.login.user,
-    initialised: state.login.initialised
+    user: state.user
   };
 }
-export default connect(mapStateToProps)(Auth);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(loginActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);
