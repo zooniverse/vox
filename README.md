@@ -1,8 +1,8 @@
 [![bitHound Score](https://www.bithound.io/github/Granze/react-starterify/badges/score.svg)](https://www.bithound.io/github/zooniverse/zoo-react-starterify/master)
 
-# Zooniverse Reduxify
+# Welcome to VoX
 
-A minimal Redux application starter kit, based on [Zooniverse React Starterify](https://github.com/zooniverse/zoo-react-starterify).
+A voting client that stores users votes with Firebase, based on [Zooniverse Reduxify](https://github.com/zooniverse/zoo-reduxify).
 
 ## Usage
 
@@ -24,7 +24,7 @@ __When you are done, create a production-ready version of the JS bundle:__
 
 ## Credits
 
-Thanks to [Granze](https://github.com/Granze) for the original [React Starterify](https://github.com/Granze/react-starterify), which is used under the [MIT License](http://opensource.org/licenses/MIT).
+Based on  [Zoonvierse React Starterify](https://github.com/zooniverse/zoo-react-starterify).
 
 ## License
 
