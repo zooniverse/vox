@@ -6,8 +6,8 @@ export function checkLoginUser() {
   return (dispatch) => {
     firebase.auth().onAuthStateChanged(user => {
       user
-      ? dispatch(setLoginUser(user.providerData[0]))
-      : console.log('User not logged in')
+        ? dispatch(setLoginUser(user.providerData[0]))
+        : console.log('User not logged in')
     })
   }
 }
@@ -27,11 +27,16 @@ export function loginToGithub() {
     const provider = new firebase.auth.GithubAuthProvider();
     return firebase.auth().signInWithPopup(provider)
       .then(data => {
-        console.log('Login successful. User: ', data.user.uid)
-        return data;
+        // Check if we have an error object back
+        if (data.code) {
+          Promise.reject(data);
+        } else {
+          console.log('Login successful. User: ', data.user.uid)
+          return data;
+        }
       })
       .catch(error => {
-        console.log('Error logging in: ', error)
+        console.error('Error logging in: ', error);
       });
   }
 }

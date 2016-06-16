@@ -1,4 +1,4 @@
-import { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { checkLoginUser, setLoginUser, loginToGithub, logoutFromGithub, upsertUser } from '../actions/login';
 
@@ -20,19 +20,18 @@ class Auth extends Component {
   }
 
   login() {
-    const { dispatch } = this.props;
-    return this.props.dispatch(loginToGithub())
-      .then(user => {dispatch(upsertUser(user))});
+    return this.props.dispatch(loginToGithub());
   }
 
   logout() {
-    this.props.dispatch(logoutFromGithub());
+    return this.props.dispatch(logoutFromGithub());
   }
 
   render() {
-    return (this.props.user)
-    ? <LogoutButton user={this.props.user.displayName} logout={this.logout} />
-    : <LoginButton login={this.login} />;
+    const { user } = this.props;
+    return (user)
+      ? <LogoutButton user={user.displayName} logout={this.logout} />
+      : <LoginButton login={this.login} />;
   }
 }
 
