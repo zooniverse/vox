@@ -4,6 +4,7 @@ import VoteCounter from './VoteCounter'
 export default class IssueList extends Component {
   constructor(props) {
     super(props);
+    console.log('PROPS: ', props)
     this.state = {
       voted: false
     };
@@ -11,8 +12,9 @@ export default class IssueList extends Component {
     this.handleVotes = this.handleVotes.bind(this);
   }
 
-  handleVotes() {
-    console.log('handled!')
+  handleVotes(issueId) {
+    console.log('HANDLING VOTES ON ISSUE: ', issueId)
+
   }
 
   renderClassroomList(data) {
@@ -27,7 +29,7 @@ export default class IssueList extends Component {
               count={item.number}
               isActive={this.state.voted}
               activeColor='false'
-              handleVotes={this.handleVotes}
+              handleVotes={this.handleVotes(item.number)}
             />
           </div>
         )}

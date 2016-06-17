@@ -1,4 +1,3 @@
-import { browserHistory } from 'react-router';
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
