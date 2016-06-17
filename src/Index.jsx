@@ -4,7 +4,6 @@ import { IndexRoute, Router, Route } from 'react-router';
 import { Provider } from 'react-redux';
 import App from './components/App';
 import Issues from './containers/Issues';
-import About from './components/About';
 
 import { base } from './constants/base';
 
@@ -22,7 +21,6 @@ ReactDOM.render(
     <Router>
       <Route path="/" component={App}>
         <IndexRoute component={Issues} />
-        <Route path="/about" component={About}/>
       </Route>
     </Router>
   </Provider>

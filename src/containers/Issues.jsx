@@ -17,10 +17,9 @@ class Issues extends Component {
   render() {
     const { issues } = this.props;
     return (
-      <IssueList issues={issues}/>
+      <IssueList issues={issues} />
     );
   }
-
 
 }
 
