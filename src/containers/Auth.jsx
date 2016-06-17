@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as loginActions from '../actions/login';
 
-import LoginButton from '../components/LoginButton';
-import LogoutButton from '../components/LogoutButton';
 import AuthButton from '../components/AuthButton';
 
 class Auth extends Component {
