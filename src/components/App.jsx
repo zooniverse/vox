@@ -18,16 +18,16 @@ export default class App extends React.Component {
             VoX
           </h1>
           <nav className="db dtc-ns v-mid w-100 w-75-ns tc tr-ns">
-            <Link to="/about" className="link dim dark-gray f6 dib mr3 mr4-ns">About</Link>
             <Auth base={base} />
           </nav>
         </header>
 
         <main className="pa3 ph5-ns mw7 center">
+          <p className="f3 f2-ns tc lh-title mb5">Vote on which issues you want to see next in the Zooniverse platform.</p>
           {this.props.children || 'Welcome to VoX'}
         </main>
 
-        <footer className="pa3 ph5-ns mw7 center">
+        <footer className="pa3 ph5-ns mw7 center tc">
           Zooniverse!
         </footer>
 
