@@ -19,7 +19,7 @@ export const USER_LOGOUT = 'USER_LOGOUT';
 
 // uservotes
 export const USERVOTES_ADD = 'USERVOTES_ADD';
-export const USERVOTES_CLEAR = 'USERVOTES_CLEAR';
+export const USERVOTES_REMOVE = 'USERVOTES_REMOVE';
 
 // vote
 

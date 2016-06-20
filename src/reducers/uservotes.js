@@ -1,18 +1,15 @@
 import * as types from '../constants/actionTypes';
 
-const initialState = {
-  issue_id: '',
-  voted: false
-};
+const initialState = {};
 
 export function userVotes(state = initialState, action) {
 
   switch (action.type) {
 
     case types.USERVOTES_ADD:
-      return Object.assign({}, state, action.payload);
+      return Object.assign({}, state, action.voted);
 
-    case types.USERVOTES_CLEAR:
+    case types.USERVOTES_REMOVE:
       return Object.assign({}, initialState);
 
     default:

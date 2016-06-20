@@ -18,7 +18,7 @@ export function checkLoginUser() {
 function setLoginUser(user) {
   return dispatch => {
     const userData = user.providerData[0];
-    console.info('Logged in as', userData.uid, userData)
+    console.info('Logged in as', userData.displayName)
     dispatch({
       type: types.USER_LOGIN,
       payload: userData
@@ -60,7 +60,7 @@ export function logout() {
       .then(user => {
         userRef.off('value', userListener);
         dispatch({ type: types.USER_LOGOUT });
-        dispatch({ type: types.USERVOTES_CLEAR });
+        dispatch({ type: types.USERVOTES_REMOVE });
         console.log('Logout successful');
       });
   }

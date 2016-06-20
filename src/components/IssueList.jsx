@@ -4,7 +4,6 @@ import VoteCounter from './VoteCounter'
 export default class IssueList extends Component {
   constructor(props) {
     super(props);
-    console.log('PROPS: ', props)
     this.state = {
       voted: false
     };

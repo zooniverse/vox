@@ -17,7 +17,6 @@ class Issues extends Component {
   }
 
   render() {
-    console.log('this.props: ', this.props)
     const { actions, issues } = this.props;
     return (
       <IssueList
