@@ -13,8 +13,14 @@ export default class IssueList extends Component {
   }
 
   handleVotes(issueId) {
-    console.log('HANDLING VOTES ON ISSUE: ', issueId)
-
+    const { userVotesActions } = this.props.actions;
+    this.setState({
+      voted: !this.state.voted,
+    }, () => {
+      this.state.voted
+        ? userVotesActions.voteIssueById(issueId)
+        : userVotesActions.unVoteIssueById(issueId);
+    })
   }
 
   renderClassroomList(data) {
@@ -26,8 +32,7 @@ export default class IssueList extends Component {
             <VoteCounter
               count={item.number}
               isActive={this.state.voted}
-              activeColor='false'
-              handleVotes={this.handleVotes(item.number)}
+              handleVotes={this.handleVotes.bind(this, item.number)}
             />
             <div className="fl w-80">
               <h2 className="mt0 mb1 f3">
@@ -55,11 +60,7 @@ export default class IssueList extends Component {
   }
 }
 
-IssueList.defaultProps = {
-  issues: {
-    data: [],
-    error: false,
-    issue: null,
-    loading: false,
-  },
+IssueList.propTypes = {
+  issues: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
 };

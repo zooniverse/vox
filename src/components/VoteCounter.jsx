@@ -1,6 +1,7 @@
-import React from 'react';
+import {PropTypes } from 'react';
 
-const VoteCounter = ({count, isActive, activeColor, handleVotes}) => (
+
+const VoteCounter = ({count, isActive, handleVotes}) => (
   <div className="fl w-20">
     <button onClick={handleVotes} className="pa2 bg-mid-gray white dim bn br2 f6 btn">
       <i className="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i>
@@ -10,10 +11,9 @@ const VoteCounter = ({count, isActive, activeColor, handleVotes}) => (
 );
 
 VoteCounter.propTypes = {
-  count: React.PropTypes.number.isRequired,
-  isActive: React.PropTypes.bool,
-  activeColor: React.PropTypes.string,
-  handleVotes: React.PropTypes.func
+  count: PropTypes.number.isRequired,
+  isActive: PropTypes.bool,
+  handleVotes: PropTypes.func
 };
 
 export default VoteCounter;

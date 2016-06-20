@@ -1,6 +1,9 @@
 import * as types from '../constants/actionTypes';
 
-const initialState = {};
+const initialState = {
+  issue_id: '',
+  voted: false
+};
 
 export function userVotes(state = initialState, action) {
 

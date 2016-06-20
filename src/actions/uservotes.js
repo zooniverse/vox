@@ -2,16 +2,16 @@ import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
 
-export function upVoteIssueById(payload) {
+export function voteIssueById(payload) {
   return {
-    type: USERVOTES_ADD,
+    type: types.USERVOTES_ADD,
     payload: payload
   };
 }
 
-export function downVoteIssueById(payload) {
+export function unVoteIssueById(payload) {
   return {
-    type: USERVOTES_CLEAR,
+    type: types.USERVOTES_CLEAR,
     payload: payload
   };
 }
