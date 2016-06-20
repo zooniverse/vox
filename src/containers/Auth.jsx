@@ -12,9 +12,9 @@ class Auth extends Component {
   }
 
   render() {
-    const { user } = this.props;
-    const text = (user) ? `Logout ${user.displayName}` : 'Login';
-    const action = (user) ? this.logout : this.login;
+    const { actions, user } = this.props;
+    const text = (user && user.displayName) ? `Logout ${user.displayName}` : 'Login';
+    const action = (user && user.displayName) ? actions.logout : actions.login;
     return <AuthButton text={text} action={action} />
   }
 }
