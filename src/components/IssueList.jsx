@@ -20,17 +20,26 @@ export default class IssueList extends Component {
   renderClassroomList(data) {
     const list = (data.length > 0) ? data : [];
     return (
-      <div className="list-group">
+      <div>
         { list.map((item) =>
-          <div key={item.number} className="list-group-item">
-            <h1><a href={item.url} target="_blank">{item.title}</a></h1>
-            <p>{item.body}</p>
+          <div key={item.number} className="cf mb4">
             <VoteCounter
               count={item.number}
               isActive={this.state.voted}
               activeColor='false'
               handleVotes={this.handleVotes(item.number)}
             />
+            <div className="fl w-80">
+              <h2 className="mt0 mb1 f3">
+                {item.title}
+              </h2>
+              <a href={item.html_url} target="_blank" className="db f6 link dim gray">
+                View issue on GitHub
+              </a>
+              <p className="f5 lh-copy measure">
+                {item.body}
+              </p>
+            </div>
           </div>
         )}
       </div>
@@ -40,7 +49,7 @@ export default class IssueList extends Component {
   render() {
     return (
       <div>
-      { this.renderClassroomList(this.props.issues.data) }
+        { this.renderClassroomList(this.props.issues.data) }
       </div>
     )
   }

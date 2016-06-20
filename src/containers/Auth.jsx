@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux'
 import * as loginActions from '../actions/login';
 
-import LoginButton from '../components/LoginButton';
-import LogoutButton from '../components/LogoutButton';
+import AuthButton from '../components/AuthButton';
 
 class Auth extends Component {
 
@@ -13,10 +12,10 @@ class Auth extends Component {
   }
 
   render() {
-    const { user, actions } = this.props;
-    return (user && user.displayName)
-      ? <LogoutButton user={user.displayName} logout={actions.logout} />
-      : <LoginButton login={actions.login} />;
+    const { actions, user } = this.props;
+    const text = (user && user.displayName) ? `Logout ${user.displayName}` : 'Login';
+    const action = (user && user.displayName) ? actions.logout : actions.login;
+    return <AuthButton text={text} action={action} />
   }
 }
 

@@ -1,8 +1,8 @@
 import React from 'react';
 
 const VoteCounter = ({count, isActive, activeColor, handleVotes}) => (
-  <div>
-    <button onClick={handleVotes} >
+  <div className="fl w-20">
+    <button onClick={handleVotes} className="pa2 bg-mid-gray white dim bn br2 f6 btn">
       <i className="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i>
     </button>
     <p>{count} votes</p>
