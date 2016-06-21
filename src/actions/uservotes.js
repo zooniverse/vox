@@ -7,44 +7,30 @@ import { objectFilter } from '../helpers';
 let userListener;
 let userRef;
 
-
-
-//export function countVotesById(){
-//  return ( dispatch, getState) => {
-//    const user = getState().user;
-//    userRef = firebase.database().ref(`users/${user.uid}`);
-//    userListener = userRef.on('value', dataSnapshot => {
-//      const voteData = dataSnapshot.child('votes').val();
-//      const filtered = objectFilter(voteData, vote => vote === true)
-//      console.log('filtered: ', filtered)
-//      dataSnapshot.child('votes').forEach(obj => {
-//        const val = obj.val();
-//        console.log('VAL: ', val)
-//      })
-//    });
-//  }
-//}
-
-export function voteIssueById(payload) {
-  return ( dispatch, getState) => {
+export function toggleVote(issueId) {
+  return (dispatch, getState) => {
+    const voted = getState().userVotes[issueId];
     const user = getState().user;
     userRef = firebase.database().ref(`users/${user.uid}`);
-    userListener = userRef.on('value', dataSnapshot => {
-      dataSnapshot.child('votes').forEach(obj => {
-        if (obj.key == payload && obj.val() === false) {
-          dispatch({
-            type: types.USERVOTES_ADD,
-            voted: true
-          });
-        }
+    let issueRef = firebase.database().ref(`issues/${issueId}`);
+    console.log('VOTED? ', voted)
+    if (!voted) {
+      userRef.child(`/votes/${issueId}`).set(true);
+      dispatch({ type: types.USERVOTES_ADD, payload: issueId });
+      console.log('Vote added successfully')
+
+      issueRef.once('value', dataSnapshot => {
+        issueRef.child('vote_count').set(dataSnapshot.val().vote_count + 1)
       })
-    });
+    } else {
+      userRef.child(`/votes/${issueId}`).remove();
+      dispatch({ type: types.USERVOTES_REMOVE });
+      console.log('Vote removed successfully');
+
+      issueRef.once('value', dataSnapshot => {
+        issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1)
+      })
+    }
   }
 }
 
-export function unVoteIssueById(payload) {
-  return {
-    type: types.USERVOTES_REMOVE,
-    voted: false
-  };
-}

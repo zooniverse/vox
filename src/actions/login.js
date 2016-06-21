@@ -23,7 +23,6 @@ function setLoginUser(user) {
       type: types.USER_LOGIN,
       payload: userData
     })
-
     userRef = firebase.database().ref(`users/${userData.uid}`);
     userListener = userRef.on('value', dataSnapshot => {
       console.info('Updating userVotes object...')
