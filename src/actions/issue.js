@@ -4,13 +4,14 @@ import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
 
-function pluckIssueProps(array) {
-  let data = Object.keys(array).map(function(e) {
+function _pluckIssueProps(array) {
+  let data = Object.keys(array).map(e => {
     return {
       id: array[e].number,
       title: array[e].title,
       body: array[e].body,
       url: array[e].html_url,
+      votes: 0,
       };
     }
   );
@@ -27,9 +28,8 @@ export function fetchIssuesFromGH() {
       .then(array => {
         dispatch({
           type: types.RECEIVE_ISSUES_SUCCESS_GH,
-          data: pluckIssueProps(array),
+          data: _pluckIssueProps(array),
           error: false,
-          issue: null,
           loading: false,
         })
       })
@@ -37,9 +37,19 @@ export function fetchIssuesFromGH() {
         type: types.RECEIVE_ISSUES_ERROR_GH,
         data: [],
         error: response,
-        issue: null,
         loading: false,
       })
     );
+  }
+}
+
+
+export function updateIssueVoteCount(id, votes) {
+  return dispatch => {
+    dispatch({
+      type: types.UPDATE_VOTE_COUNT,
+      id: id,
+      votes: votes,
+    });
   }
 }

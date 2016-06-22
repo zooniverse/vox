@@ -5,22 +5,24 @@ import firebase from 'firebase';
 
 import VoteCounter from '../components/VoteCounter'
 
+let issueRef;
 
 class Issue extends Component {
   constructor() {
     super();
   }
 
-  componentWillMount() {
-    // listen for changes in firebase and dispatch actions
-    const issueRef = firebase.database().ref(`issues/${this.props.item.id}`);
+  componentDidMount() {
+    const { item, actions } = this.props;
+    issueRef = firebase.database().ref(`issues/${item.id}`);
     issueRef.on('value', dataSnapshot => {
-      // dispatch action to update redux with new vote count
+      item.votes = dataSnapshot.val().vote_count ? dataSnapshot.val().vote_count : 0;
+      actions.issueActions.updateIssueVoteCount(item.id, item.votes)
     });
   }
 
   componentWillUnmount() {
-    // remove the firebase listener
+    issueRef.off();
   }
 
   render() {
@@ -29,7 +31,7 @@ class Issue extends Component {
     return (
       <div key={item.id} className="cf mb4">
         <VoteCounter
-          count={item.id}
+          count={item.votes}
           isActive={userVotes[item.id]}
           handleVotes={handleVotes}
         />
@@ -38,7 +40,7 @@ class Issue extends Component {
             {item.title}
           </h2>
           <a href={item.url} target="_blank" className="db f6 link dim gray">
-            View issue on GitHub
+            View issue {item.id} on GitHub
           </a>
           <p className="f5 lh-copy measure">
             {item.body}

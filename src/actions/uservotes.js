@@ -26,7 +26,6 @@ export function toggleVote(issueId) {
       userRef.child(`/votes/${issueId}`).remove();
       dispatch({ type: types.USERVOTES_REMOVE });
 
-
       issueRef.once('value', dataSnapshot => {
         issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1)
       })

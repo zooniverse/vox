@@ -17,7 +17,7 @@ export function issues(state = initialState, action) {
     case types.RECEIVE_ISSUES_SUCCESS_GH:
       return Object.assign({}, state, {
         data: action.data || [],
-        error: action.error,
+        error: false,
         loading: false,
       })
     case types.RECEIVE_ISSUES_ERROR_GH:
@@ -38,6 +38,14 @@ export function issues(state = initialState, action) {
         error: false,
         loading: true,
       })
+    case types.UPDATE_VOTE_COUNT:
+      let newState = Object.assign({}, state);
+      newState.data.map(issue => {
+        if (issue.id === action.id) {
+          issue.votes = action.votes
+        }
+      });
+      return newState
     default:
       return state;
   }
