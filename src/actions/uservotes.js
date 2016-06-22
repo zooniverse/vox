@@ -17,19 +17,20 @@ export function toggleVote(issueId) {
     if (!voted) {
       userRef.child(`/votes/${issueId}`).set(true);
       dispatch({ type: types.USERVOTES_ADD, payload: issueId });
-      console.log('Vote added successfully')
 
       issueRef.once('value', dataSnapshot => {
         issueRef.child('vote_count').set(dataSnapshot.val().vote_count + 1)
       })
+      console.log('Vote added successfully')
     } else {
       userRef.child(`/votes/${issueId}`).remove();
       dispatch({ type: types.USERVOTES_REMOVE });
-      console.log('Vote removed successfully');
+
 
       issueRef.once('value', dataSnapshot => {
         issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1)
       })
+      console.log('Vote removed successfully');
     }
   }
 }

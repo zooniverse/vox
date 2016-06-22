@@ -24,13 +24,13 @@ class Issue extends Component {
   }
 
   render() {
-    const { item, actions } = this.props;
+    const { item, actions, userVotes } = this.props;
     const handleVotes = actions.userVotesActions.toggleVote.bind(this, item.id);
     return (
       <div key={item.id} className="cf mb4">
         <VoteCounter
           count={item.id}
-          isActive={true}
+          isActive={userVotes[item.id]}
           handleVotes={handleVotes}
         />
         <div className="fl w-80">
@@ -51,15 +51,11 @@ class Issue extends Component {
 
 Issue.propTypes = {
   item: PropTypes.object.isRequired,
+  userVotes: PropTypes.object.isRequired,
 };
 
-Issue.defaultProps = {
-  item: {
-    voteCount: '',
-  },
-};
+const mapStateToProps = state => ({
+  userVotes: state.userVotes,
+});
 
-
-
-
-export default connect()(Issue);
+export default connect(mapStateToProps)(Issue);

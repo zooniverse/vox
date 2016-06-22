@@ -3,7 +3,6 @@ import * as types from '../constants/actionTypes';
 const initialState = {
   data: [],
   error: false,
-  issue: null,
   loading: false,
 };
 
@@ -13,21 +12,18 @@ export function issues(state = initialState, action) {
       return Object.assign({}, state, {
         data: [],
         error: false,
-        issue: null,
         loading: true,
       })
     case types.RECEIVE_ISSUES_SUCCESS_GH:
       return Object.assign({}, state, {
         data: action.data || [],
         error: action.error,
-        issue: null,
         loading: false,
       })
     case types.RECEIVE_ISSUES_ERROR_GH:
       return Object.assign({}, state, {
         data: [],
         error: action.error,
-        issue: null,
         loading: false,
       })
     case types.REQUEST_ISSUE_BY_ID:
