@@ -18,7 +18,7 @@ const VoteCounter = ({count, isActive, handleVotes}) => {
 
 VoteCounter.propTypes = {
   count: PropTypes.number.isRequired,
-  isActive: PropTypes.bool,
+  isActive: PropTypes.bool.isRequired,
   handleVotes: PropTypes.func
 };
 

@@ -5,16 +5,11 @@ import firebase from 'firebase';
 
 import VoteCounter from '../components/VoteCounter'
 
-let issueRef;
-
 class Issue extends Component {
-  constructor() {
-    super();
-  }
 
   componentDidMount() {
     const { item, actions } = this.props;
-    issueRef = firebase.database().ref(`issues/${item.id}`);
+    const issueRef = firebase.database().ref(`issues/${item.id}`);
     issueRef.on('value', dataSnapshot => {
       item.votes = dataSnapshot.val().vote_count ? dataSnapshot.val().vote_count : 0;
       actions.issueActions.updateIssueVoteCount(item.id, item.votes)

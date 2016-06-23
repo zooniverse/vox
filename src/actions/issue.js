@@ -5,12 +5,12 @@ import firebase from 'firebase';
 
 
 function _pluckIssueProps(array) {
-  let data = Object.keys(array).map(e => {
+  const data = Object.keys(array).map(el => {
     return {
-      id: array[e].number,
-      title: array[e].title,
-      body: array[e].body,
-      url: array[e].html_url,
+      id: array[el].number,
+      title: array[el].title,
+      body: array[el].body,
+      url: array[el].html_url,
       votes: 0,
       };
     }
@@ -29,15 +29,12 @@ export function fetchIssuesFromGH() {
         dispatch({
           type: types.RECEIVE_ISSUES_SUCCESS_GH,
           data: _pluckIssueProps(array),
-          error: false,
           loading: false,
         })
       })
       .catch(response => dispatch({
         type: types.RECEIVE_ISSUES_ERROR_GH,
-        data: [],
         error: response,
-        loading: false,
       })
     );
   }
@@ -48,8 +45,8 @@ export function updateIssueVoteCount(id, votes) {
   return dispatch => {
     dispatch({
       type: types.UPDATE_VOTE_COUNT,
-      id: id,
-      votes: votes,
+      id,
+      votes,
     });
   }
 }
