@@ -13,19 +13,19 @@ export function issues(state = initialState, action) {
         data: [],
         error: false,
         loading: true,
-      })
+      });
     case types.RECEIVE_ISSUES_SUCCESS_GH:
       return Object.assign({}, state, {
         data: action.payload,
         error: false,
         loading: false,
-      })
+      });
     case types.RECEIVE_ISSUES_ERROR_GH:
       return Object.assign({}, state, {
         data: [],
         error: action.payload,
         loading: false,
-      })
+      });
     case types.UPDATE_VOTE_COUNT:
       const newState = Object.assign({}, state);
       newState.data = newState.data.map(issue => {
