@@ -10,7 +10,9 @@ export function userVotes(state = initialState, action) {
       return Object.assign({}, state, action.payload);
 
     case types.USERVOTES_REMOVE:
-      return Object.assign({}, initialState);
+      let newState = Object.assign({}, state);
+      delete newState[action.payload]
+      return newState
 
     default:
       return state;

@@ -1,8 +1,6 @@
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
-import { objectFilter } from '../helpers';
-
 // References for our Firebase listener
 let userListener;
 let userRef;
@@ -24,7 +22,7 @@ export function toggleVote(issueId) {
       console.log('Vote added successfully')
     } else {
       userRef.child(`/votes/${issueId}`).remove();
-      dispatch({ type: types.USERVOTES_REMOVE });
+      dispatch({ type: types.USERVOTES_REMOVE, payload: issueId });
 
       issueRef.once('value', dataSnapshot => {
         issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1)
