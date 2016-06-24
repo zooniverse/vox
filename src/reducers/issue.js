@@ -16,22 +16,22 @@ export function issues(state = initialState, action) {
       })
     case types.RECEIVE_ISSUES_SUCCESS_GH:
       return Object.assign({}, state, {
-        data: action.data || [],
+        data: action.payload,
         error: false,
         loading: false,
       })
     case types.RECEIVE_ISSUES_ERROR_GH:
       return Object.assign({}, state, {
         data: [],
-        error: action.error,
+        error: action.payload,
         loading: false,
       })
     case types.UPDATE_VOTE_COUNT:
       const newState = Object.assign({}, state);
       newState.data = newState.data.map(issue => {
         const newIssue = Object.assign({}, issue)
-        if (newIssue.id === action.id) {
-          newIssue.votes = action.votes
+        if (newIssue.id === action.payload.id) {
+          newIssue.votes = action.payload.votes
         }
         return newIssue;
       });
