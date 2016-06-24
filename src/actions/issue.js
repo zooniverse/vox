@@ -4,6 +4,19 @@ import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
 
+function _pluckIssueProps(array) {
+  return Object.keys(array).map(el => {
+    return {
+      id: array[el].number,
+      title: array[el].title,
+      body: array[el].body,
+      url: array[el].html_url,
+      votes: 0,
+      };
+    }
+  );
+}
+
 export function fetchIssuesFromGH() {
   return dispatch => {
     dispatch({
@@ -12,19 +25,25 @@ export function fetchIssuesFromGH() {
     return fetch('https://api.github.com/repos/zooniverse/wildcam-gorongosa-education/issues?labels=education-api')
       .then(response => response.json())
       .then(array => dispatch({
-        type: types.RECEIVE_ISSUES_SUCCESS_GH,
-        data: array,
-        error: false,
-        issue: null,
-        loading: false,
-      }))
+          type: types.RECEIVE_ISSUES_SUCCESS_GH,
+          payload: _pluckIssueProps(array),
+        })
+      )
       .catch(response => dispatch({
         type: types.RECEIVE_ISSUES_ERROR_GH,
-        data: [],
-        error: response,
-        issue: null,
-        loading: false,
+        payload: response,
       })
     );
   }
+}
+
+
+export function updateIssueVoteCount(id, votes) {
+  return dispatch => dispatch({
+      type: types.UPDATE_VOTE_COUNT,
+      payload: {
+        id,
+        votes,
+      }
+    });
 }

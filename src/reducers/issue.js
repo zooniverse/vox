@@ -16,28 +16,26 @@ export function issues(state = initialState, action) {
       })
     case types.RECEIVE_ISSUES_SUCCESS_GH:
       return Object.assign({}, state, {
-        data: action.data || [],
-        error: action.error,
+        data: action.payload,
+        error: false,
         loading: false,
       })
     case types.RECEIVE_ISSUES_ERROR_GH:
       return Object.assign({}, state, {
         data: [],
-        error: action.error,
+        error: action.payload,
         loading: false,
       })
-    case types.REQUEST_ISSUE_BY_ID:
-      return Object.assign({}, state, {
-        data: action.data || [],
-        error: false,
-        loading: true,
-      })
-    case types.REQUEST_ISSUE_BY_ID_SUCCESS:
-      return Object.assign({}, state, {
-        data: action.data || [],
-        error: false,
-        loading: true,
-      })
+    case types.UPDATE_VOTE_COUNT:
+      const newState = Object.assign({}, state);
+      newState.data = newState.data.map(issue => {
+        const newIssue = Object.assign({}, issue)
+        if (newIssue.id === action.payload.id) {
+          newIssue.votes = action.payload.votes
+        }
+        return newIssue;
+      });
+      return newState;
     default:
       return state;
   }

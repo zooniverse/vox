@@ -9,8 +9,10 @@ export function userVotes(state = initialState, action) {
     case types.USERVOTES_ADD:
       return Object.assign({}, state, action.payload);
 
-    case types.USERVOTES_CLEAR:
-      return Object.assign({}, initialState);
+    case types.USERVOTES_REMOVE:
+      let newState = Object.assign({}, state);
+      delete newState[action.payload]
+      return newState
 
     default:
       return state;
