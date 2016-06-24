@@ -27,7 +27,6 @@ class Issue extends Component {
   render() {
     const { item, actions, userVotes } = this.props;
     const handleVotes = actions.userVotesActions.toggleVote.bind(this, item.id);
-    console.log('userVotes[item.id]: ', userVotes[item.id])
     return (
       <div key={item.id} className="cf mb4">
         <VoteCounter

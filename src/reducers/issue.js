@@ -27,13 +27,15 @@ export function issues(state = initialState, action) {
         loading: false,
       })
     case types.UPDATE_VOTE_COUNT:
-      let newState = Object.assign({}, state);
-      newState.data.map(issue => {
-        if (issue.id === action.id) {
-          issue.votes = action.votes
+      const newState = Object.assign({}, state);
+      newState.data = newState.data.map(issue => {
+        const newIssue = Object.assign({}, issue)
+        if (newIssue.id === action.id) {
+          newIssue.votes = action.votes
         }
+        return newIssue;
       });
-      return newState
+      return newState;
     default:
       return state;
   }
