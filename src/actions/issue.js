@@ -5,7 +5,7 @@ import firebase from 'firebase';
 
 
 function _pluckIssueProps(array) {
-  const data = Object.keys(array).map(el => {
+  return Object.keys(array).map(el => {
     return {
       id: array[el].number,
       title: array[el].title,
@@ -15,7 +15,6 @@ function _pluckIssueProps(array) {
       };
     }
   );
-  return data;
 }
 
 export function fetchIssuesFromGH() {
@@ -25,12 +24,11 @@ export function fetchIssuesFromGH() {
     });
     return fetch('https://api.github.com/repos/zooniverse/wildcam-gorongosa-education/issues?labels=education-api')
       .then(response => response.json())
-      .then(array => {
-        dispatch({
+      .then(array => dispatch({
           type: types.RECEIVE_ISSUES_SUCCESS_GH,
-          payload : _pluckIssueProps(array),
+          payload: _pluckIssueProps(array),
         })
-      })
+      )
       .catch(response => dispatch({
         type: types.RECEIVE_ISSUES_ERROR_GH,
         payload: response,
@@ -41,13 +39,11 @@ export function fetchIssuesFromGH() {
 
 
 export function updateIssueVoteCount(id, votes) {
-  return dispatch => {
-    dispatch({
+  return dispatch => dispatch({
       type: types.UPDATE_VOTE_COUNT,
       payload: {
         id,
         votes,
       }
     });
-  }
 }
