@@ -4,17 +4,14 @@ import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 
 
-function _pluckIssueProps(array) {
-  return Object.keys(array).map(el => {
-    return {
-      id: array[el].number,
-      title: array[el].title,
-      body: array[el].body,
-      url: array[el].html_url,
-      votes: 0,
-      };
-    }
-  );
+function _pluckIssueProps(el) {
+  return {
+    id: el.number,
+    title: el.title,
+    body: el.body,
+    url: el.html_url,
+    votes: 0,
+  };
 }
 
 export function fetchIssuesFromGH() {
@@ -26,7 +23,7 @@ export function fetchIssuesFromGH() {
       .then(response => response.json())
       .then(array => dispatch({
           type: types.RECEIVE_ISSUES_SUCCESS_GH,
-          payload: _pluckIssueProps(array),
+          payload: array.map(_pluckIssueProps),
         })
       )
       .catch(response => dispatch({
@@ -36,7 +33,6 @@ export function fetchIssuesFromGH() {
     );
   }
 }
-
 
 export function updateIssueVoteCount(id, votes) {
   return dispatch => dispatch({
