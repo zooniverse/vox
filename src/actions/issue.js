@@ -21,11 +21,15 @@ export function fetchIssuesFromGH() {
       .then(response => response.json())
       .then(array => dispatch({
         type: types.RECEIVE_ISSUES_SUCCESS_GH,
-        payload: array.map(_pluckIssueProps),
+        payload: {
+          issues: array.map(_pluckIssueProps),
+        },
       }))
-      .catch(response => dispatch({
+      .catch(error => dispatch({
         type: types.RECEIVE_ISSUES_ERROR_GH,
-        payload: response,
+        payload: {
+          error,
+        },
       }));
   };
 }
@@ -33,7 +37,9 @@ export function fetchIssuesFromGH() {
 export function updateIssueVoteCount(id, votes) {
   return {
     type: types.UPDATE_VOTE_COUNT,
-    id,
-    votes,
+    payload: {
+      id,
+      votes,
+    }
   };
 }
