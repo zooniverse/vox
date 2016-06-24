@@ -23,7 +23,7 @@
   "scripts": {
     "start": "babel-node server.js",
     "test": "",
-    "eslint": "eslint .",
+    "lint": "eslint .; exit 0",
     "build": "webpack --config webpack.production.config.js -p"
   },
   "author": "Zooniverse",
