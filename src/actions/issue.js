@@ -1,20 +1,15 @@
-import { browserHistory } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
-import firebase from 'firebase';
 
 
-function _pluckIssueProps(array) {
-  return Object.keys(array).map(el => {
-    return {
-      id: array[el].number,
-      title: array[el].title,
-      body: array[el].body,
-      url: array[el].html_url,
-      votes: 0,
-      };
-    }
-  );
+function _pluckIssueProps(issue) {
+  return {
+    id: issue.number,
+    title: issue.title,
+    body: issue.body,
+    url: issue.html_url,
+    votes: 0,
+  };
 }
 
 export function fetchIssuesFromGH() {
@@ -25,25 +20,26 @@ export function fetchIssuesFromGH() {
     return fetch('https://api.github.com/repos/zooniverse/wildcam-gorongosa-education/issues?labels=education-api')
       .then(response => response.json())
       .then(array => dispatch({
-          type: types.RECEIVE_ISSUES_SUCCESS_GH,
-          payload: _pluckIssueProps(array),
-        })
-      )
-      .catch(response => dispatch({
+        type: types.RECEIVE_ISSUES_SUCCESS_GH,
+        payload: {
+          issues: array.map(_pluckIssueProps),
+        },
+      }))
+      .catch(error => dispatch({
         type: types.RECEIVE_ISSUES_ERROR_GH,
-        payload: response,
-      })
-    );
-  }
+        payload: {
+          error,
+        },
+      }));
+  };
 }
 
-
 export function updateIssueVoteCount(id, votes) {
-  return dispatch => dispatch({
-      type: types.UPDATE_VOTE_COUNT,
-      payload: {
-        id,
-        votes,
-      }
-    });
+  return {
+    type: types.UPDATE_VOTE_COUNT,
+    payload: {
+      id,
+      votes,
+    }
+  };
 }
