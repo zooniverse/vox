@@ -7,27 +7,32 @@ import VoteCounter from '../components/VoteCounter'
 
 class Issue extends Component {
 
+  constructor(props) {
+    super();
+    this.issueRef = firebase.database().ref(`issues/${props.item.id}`);
+  }
+
   componentDidMount() {
     const { item, actions } = this.props;
-    const issueRef = firebase.database().ref(`issues/${item.id}`);
-    issueRef.on('value', dataSnapshot => {
+    this.issueRef.on('value', dataSnapshot => {
       item.votes = dataSnapshot.val().vote_count ? dataSnapshot.val().vote_count : 0;
       actions.issueActions.updateIssueVoteCount(item.id, item.votes)
     });
   }
 
   componentWillUnmount() {
-    issueRef.off();
+    this.issueRef.off();
   }
 
   render() {
     const { item, actions, userVotes } = this.props;
     const handleVotes = actions.userVotesActions.toggleVote.bind(this, item.id);
+    console.log('userVotes[item.id]: ', userVotes[item.id])
     return (
       <div key={item.id} className="cf mb4">
         <VoteCounter
           count={item.votes}
-          isActive={userVotes[item.id]}
+          isActive={userVotes[item.id] ? userVotes[item.id] : false}
           handleVotes={handleVotes}
         />
         <div className="fl w-80">
