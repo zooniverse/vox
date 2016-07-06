@@ -10,6 +10,7 @@ firebase.initializeApp(base);
 
 export default class App extends React.Component {
   render() {
+    console.log('Environment: ' + process.env.NODE_ENV)
     return (
       <div>
 
