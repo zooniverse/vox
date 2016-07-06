@@ -17,13 +17,12 @@ export function checkLoginUser() {
 
 function setLoginUser(user) {
   return dispatch => {
-    const userData = user.providerData[0];
-    console.info('Logged in as', userData.displayName)
+    console.info('Logged in as', user.providerData[0].displayName)
     dispatch({
       type: types.USER_LOGIN,
-      payload: userData
+      payload: user
     })
-    userRef = firebase.database().ref(`users/${userData.uid}`);
+    userRef = firebase.database().ref(`users/${user.uid}`);
     userListener = userRef.on('value', dataSnapshot => {
       console.info('Updating userVotes object...')
       const voteData = dataSnapshot.child('votes').val();
