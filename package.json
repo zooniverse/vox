@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/zooniverse/zoo-react-starterify",
   "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "firebase": "^3.0.4",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
