@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "start": "babel-node server.js",
-    "test": "",
+    "test": "exit 0",
     "eslint": "eslint .",
     "build": "webpack --config webpack.production.config.js -p"
   },
