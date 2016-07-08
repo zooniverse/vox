@@ -26,7 +26,7 @@ __When you are done, create a production-ready version of the JS bundle:__
 
 ## Deployment
 
-Changes to master are deployed to S3 via [Travis-CI](https://travis-ci.org/zooniverse/vox).
+Changes to master are deployed to S3 via [Travis-CI](https://travis-ci.org/zooniverse/vox). Node dependencies are cached between builds, so if you're adding a new package, you'll need to [clear the cache in Travis](https://travis-ci.org/zooniverse/vox/caches) first.
 
 ## Credits
 
