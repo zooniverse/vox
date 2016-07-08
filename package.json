@@ -35,11 +35,10 @@
   "dependencies": {
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "firebase": "^3.0.4",
-    "history": "^1.13.1",
     "react": "^15.2.0",
     "react-dom": "^15.2.0",
     "react-redux": "^4.4.5",
-    "react-router": "1.0.0-rc3",
+    "react-router": "^2.5.2",
     "redux": "^3.5.2",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.1"
