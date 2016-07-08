@@ -1,5 +1,7 @@
 [![bitHound Score](https://www.bithound.io/github/Granze/react-starterify/badges/score.svg)](https://www.bithound.io/github/zooniverse/zoo-react-starterify/master)
 
+[![Build Status](https://travis-ci.org/zooniverse/vox.svg?branch=master)](https://travis-ci.org/zooniverse/vox)
+
 # Welcome to VoX
 
 A voting client that stores users votes with Firebase, based on [Zooniverse Reduxify](https://github.com/zooniverse/zoo-reduxify).
