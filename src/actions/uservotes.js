@@ -10,7 +10,6 @@ export function toggleVote(issueId) {
   return (dispatch, getState) => {
     const voted = getState().userVotes[issueId];
     const user = getState().user;
-    console.log('getState().user: ', getState().user)
     if (user.uid) {
       userRef = firebase.database().ref(`users/${user.uid}`);
       issueRef = firebase.database().ref(`issues/${issueId}`);
