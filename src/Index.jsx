@@ -17,10 +17,10 @@ import Styles from './styles/main.styl';
 window.React = React;
 
 ReactDOM.render(
-  <Provider store={store}>
+  <Provider store={ store }>
     <Router>
-      <Route path="/" component={App}>
-        <IndexRoute component={Issues} />
+      <Route path="/" component={ App }>
+        <IndexRoute component={ Issues } />
       </Route>
     </Router>
   </Provider>

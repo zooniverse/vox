@@ -5,16 +5,13 @@ import firebase from 'firebase';
 
 
 function _pluckIssueProps(array) {
-  return Object.keys(array).map(el => {
-    return {
-      id: array[el].number,
-      title: array[el].title,
-      body: array[el].body,
-      url: array[el].html_url,
-      votes: 0,
-      };
-    }
-  );
+  return Object.keys(array).map(el => ({
+    id: array[el].number,
+    title: array[el].title,
+    body: array[el].body,
+    url: array[el].html_url,
+    votes: 0,
+  }));
 }
 
 export function fetchIssuesFromGH() {
