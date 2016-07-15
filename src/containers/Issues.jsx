@@ -20,8 +20,8 @@ class Issues extends Component {
     const { actions, issues } = this.props;
     return (
       <IssueList
-      issues={issues}
-      actions={actions}  />
+      issues={ issues }
+      actions={ actions }  />
     );
   }
 }
