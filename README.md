@@ -1,4 +1,6 @@
-[![bitHound Score](https://www.bithound.io/github/Granze/react-starterify/badges/score.svg)](https://www.bithound.io/github/zooniverse/zoo-react-starterify/master)
+[![Build Status](https://travis-ci.org/zooniverse/vox.svg?branch=master)](https://travis-ci.org/zooniverse/vox)
+
+[![bitHound Overall Score](https://www.bithound.io/github/zooniverse/vox/badges/score.svg)](https://www.bithound.io/github/zooniverse/vox)
 
 # Welcome to VoX
 
@@ -21,6 +23,10 @@ __Development mode with livereload:__
 __When you are done, create a production-ready version of the JS bundle:__
 
 ```npm run build```
+
+## Deployment
+
+Changes to master are deployed to S3 via [Travis-CI](https://travis-ci.org/zooniverse/vox). Node dependencies are cached between builds, so if you're adding a new package, you'll need to [clear the cache in Travis](https://travis-ci.org/zooniverse/vox/caches) first.
 
 ## Credits
 

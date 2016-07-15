@@ -22,9 +22,10 @@
   ],
   "scripts": {
     "start": "babel-node server.js",
-    "test": "",
+    "test": "exit 0",
     "eslint": "eslint .",
-    "build": "webpack --config webpack.production.config.js -p"
+    "build": "webpack --config webpack.production.config.js -p",
+    "deploy-preview": "npm run build && publisssh dist zooniverse-static/vote-preview.zooniverse.org/"
   },
   "author": "Zooniverse",
   "license": "Apache-2.0",
@@ -36,6 +37,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "firebase": "^3.0.4",
     "history": "^1.13.1",
+    "publisssh": "^1.1.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.4.5",
