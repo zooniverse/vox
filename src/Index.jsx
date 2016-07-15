@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { IndexRoute, Router, Route } from 'react-router';
+import { IndexRoute, Router, Route, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import App from './components/App';
 import Issues from './containers/Issues';
@@ -18,7 +18,7 @@ window.React = React;
 
 ReactDOM.render(
   <Provider store={ store }>
-    <Router>
+    <Router history={ browserHistory }>
       <Route path="/" component={ App }>
         <IndexRoute component={ Issues } />
       </Route>
