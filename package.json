@@ -36,6 +36,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.8.0",
     "firebase": "^3.0.4",
     "history": "^1.13.1",
+    "panoptes-client": "^2.5.2",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.4.5",

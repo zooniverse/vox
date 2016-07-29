@@ -1,5 +1,7 @@
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
+import base from '../constants/base';
+import oauth from 'panoptes-client/lib/oauth';
 
 // References for our Firebase listener
 let userListener;
@@ -17,7 +19,7 @@ export function checkLoginUser() {
 
 function setLoginUser(user) {
   return dispatch => {
-    console.info('Logged in as', user.providerData[0].displayName)
+    console.info('Logged in as', user.uid)
     dispatch({
       type: types.USER_LOGIN,
       payload: user
@@ -36,19 +38,34 @@ function setLoginUser(user) {
 
 export function login() {
   return (dispatch) => {
-    const provider = new firebase.auth.GithubAuthProvider();
-    return firebase.auth().signInWithPopup(provider)
-      .then(data => {
-        // Check if we have an error object back
-        if (data.code) {
-          Promise.reject(data);
-        } else {
-          dispatch(setLoginUser(data.user))
-        }
-      })
-      .catch(error => {
-        console.error('Error logging in: ', error);
-      });
+    let token = "get-token-from-the-service-to-be-built";
+    if (token) {
+      console.log('token: ', token);
+      return firebase.auth().signInWithCustomToken(token)
+        .then(data => {
+          // Check if we have an error object back
+          if (data.code) {
+            Promise.reject(data);
+          } else {
+            dispatch(setLoginUser(data))
+          }
+        })
+        .catch(function(error) {
+          console.log('error.code: ', error.code);
+          console.log('error.message: ', error.message);
+        });
+    } else {
+      dispatch(panoptesLogin())
+      console.log('undefined token: ', token);
+    }
+
+
+
+  }
+}
+export function panoptesLogin() {
+  return (dispatch) => {
+    oauth.signIn(base.panoptesReturnUrl);
   }
 }
 
