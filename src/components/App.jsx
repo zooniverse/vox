@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
-import packageJSON from '../../package.json';
 import Auth from '../containers/Auth';
 
 import firebase from 'firebase';
@@ -8,8 +6,9 @@ import base from '../constants/base';
 
 firebase.initializeApp(base);
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
+    console.log('Environment: ' + process.env.NODE_ENV);
     return (
       <div>
 
@@ -18,12 +17,12 @@ export default class App extends React.Component {
             VoX
           </h1>
           <nav className="db dtc-ns v-mid w-100 w-75-ns tc tr-ns">
-            <Auth base={base} />
+            <Auth base={ base } />
           </nav>
         </header>
 
         <main className="pa3 ph5-ns mw7 center">
-          <p className="f3 f2-ns tc lh-title mb5">Vote on which issues you want to see next in the Zooniverse platform.</p>
+          <p className="f3 f2-ns tc lh-title mb5">Vote the features you want to see next on the Zooniverse.</p>
           {this.props.children || 'Welcome to VoX'}
         </main>
 
@@ -40,3 +39,5 @@ App.propTypes = {
   children: React.PropTypes.object,
   base: React.PropTypes.object,
 };
+
+export default App;

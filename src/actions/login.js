@@ -1,65 +1,129 @@
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
+import base from '../constants/base';
+import oauth from 'panoptes-client/lib/oauth';
 
 // References for our Firebase listener
 let userListener;
 let userRef;
 
-export function checkLoginUser() {
-  return (dispatch) => {
-    firebase.auth().onAuthStateChanged(user => {
-      user
-        ? dispatch(setLoginUser(user))
-        : console.log('User not logged in')
-    })
-  }
-}
 
 function setLoginUser(user) {
   return dispatch => {
-    console.info('Logged in as', user.providerData[0].displayName)
     dispatch({
       type: types.USER_LOGIN,
-      payload: user
-    })
-    userRef = firebase.database().ref(`users/${user.uid}`);
-    userListener = userRef.on('value', dataSnapshot => {
-      console.info('Updating userVotes object...')
-      const voteData = dataSnapshot.child('votes').val();
-      dispatch({
-        type: types.USERVOTES_ADD,
-        payload: voteData
-      });
+      payload: user,
     });
-  }
+    if (user) {
+      userRef = firebase.database().ref(`users/${user.uid}`);
+      userListener = userRef.on('value', dataSnapshot => {
+        console.info('Updating userVotes object...');
+        const voteData = dataSnapshot.child('votes').val();
+        dispatch({
+          type: types.USERVOTES_ADD,
+          payload: voteData,
+        });
+      });
+    }
+  };
+}
+
+
+function getFirebaseToken(token) {
+//  don't hard code the endpoint
+  return fetch('http://localhost:8080/validate?token=' + token, {
+    method: 'GET',
+    mode: 'cors',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+  })
+  .then(response => response.json())
+  .then(json => json.token)
+  .catch(error => console.error('ERROR: ', error));
+}
+
+function firebaseLogin(apiToken) {
+  return (dispatch) => {
+    getFirebaseToken(apiToken)
+      .then(firebaseToken => {
+        if (firebaseToken) {
+          firebase.auth().signInWithCustomToken(firebaseToken)
+            .then(userData => {
+              dispatch(setLoginUser(userData));
+              console.log('Firebase login successful.');
+            })
+            .catch(error => {
+              console.log('error: ', error);
+            });
+        } else {
+          console.error('Undefined Firebase token');
+        }
+      });
+  };
+}
+
+function setFirebaseUserDisplayname(panoptesDisplayName) {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user.updateProfile({
+        displayName: panoptesDisplayName,
+      }).then(() => {
+        console.log('Firebase displayName set.');
+      }, (error) => {
+        console.log('Error:', error);
+      });
+    }
+  });
+}
+
+function panoptesLogin() {
+  return oauth.signIn(base.panoptesReturnUrl);
 }
 
 export function login() {
   return (dispatch) => {
-    const provider = new firebase.auth.GithubAuthProvider();
-    return firebase.auth().signInWithPopup(provider)
-      .then(data => {
-        // Check if we have an error object back
-        if (data.code) {
-          Promise.reject(data);
-        } else {
-          dispatch(setLoginUser(data.user))
+    if (oauth._tokenDetails) {
+      dispatch(firebaseLogin(oauth._tokenDetails.access_token));
+    } else {
+      dispatch(panoptesLogin());
+    }
+  };
+}
+
+export function checkLoginUser() {
+  return (dispatch) => {
+    oauth.checkCurrent()
+      .then(user => {
+        if (user) {
+          setFirebaseUserDisplayname(user.display_name);
+          dispatch(setLoginUser(user));
+          dispatch(login());
         }
-      })
-      .catch(error => {
-        console.error('Error logging in: ', error);
       });
-  }
+  };
+}
+
+function logoutFromPanoptes() {
+  return (dispatch) => {
+    oauth.signOut()
+      .then(user => {
+        dispatch(setLoginUser(user));
+      });
+  };
 }
 
 export function logout() {
   return (dispatch) => {
     firebase.auth().signOut()
-      .then(user => {
+      .then(() => {
         userRef.off('value', userListener);
         dispatch({ type: types.USER_LOGOUT });
         dispatch({ type: types.USERVOTES_REMOVE });
-        console.log('Logout successful');
+        console.log('Firebase logout successful');
+      })
+      .then(() => {
+        dispatch(logoutFromPanoptes());
       });
-  }
+  };
 }

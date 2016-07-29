@@ -1,4 +1,4 @@
-//issue
+// issue
 
 export const REQUEST_ISSUES_GH = 'REQUEST_ISSUES_GH';
 export const RECEIVE_ISSUES_SUCCESS_GH = 'RECEIVE_ISSUES_SUCCESS_GH';

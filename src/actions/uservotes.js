@@ -3,37 +3,37 @@ import firebase from 'firebase';
 
 // References for our Firebase listener
 let issueRef;
-let userListener;
 let userRef;
 
 export function toggleVote(issueId) {
   return (dispatch, getState) => {
-    const voted = getState().userVotes[issueId];
-    const user = getState().user;
-    console.log('getState().user: ', getState().user)
+    const { user, userVotes } = getState();
     if (user.uid) {
-      userRef = firebase.database().ref(`users/${user.uid}`);
-      issueRef = firebase.database().ref(`issues/${issueId}`);
-      if (!voted) {
-        userRef.child(`/votes/${issueId}`).set(true);
-        dispatch({ type: types.USERVOTES_ADD, payload: issueId });
+      userRef = firebase.database().ref(`users/${ user.uid }`);
+      issueRef = firebase.database().ref(`issues/${ issueId }`);
 
-        issueRef.once('value', dataSnapshot => {
-          issueRef.child('vote_count').set(dataSnapshot.val().vote_count + 1)
-        })
-        console.log('Vote added successfully')
+      if (!userVotes[issueId]) {
+        userRef.child(`/votes/${ issueId }`).set(true);
+        dispatch({
+          type: types.USERVOTES_ADD,
+          payload: issueId,
+        });
+
+        issueRef.once('value', dataSnapshot =>
+          issueRef.child('vote_count').set(dataSnapshot.val().vote_count + 1));
+
+        console.log('Vote added successfully');
       } else {
-        userRef.child(`/votes/${issueId}`).remove();
-        dispatch({ type: types.USERVOTES_REMOVE, payload: issueId });
+        userRef.child(`/votes/${ issueId }`).remove();
+        dispatch({
+          type: types.USERVOTES_REMOVE,
+          payload: issueId,
+        });
 
-        issueRef.once('value', dataSnapshot => {
-          issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1)
-        })
+        issueRef.once('value', dataSnapshot =>
+          issueRef.child('vote_count').set(dataSnapshot.val().vote_count - 1));
         console.log('Vote removed successfully');
       }
-    } else {
-      alert('No login? No vote.')
     }
-  }
+  };
 }
-

@@ -1,16 +1,11 @@
 import * as types from '../constants/actionTypes';
 
-const initialState = {};
-
-export function user(state = initialState, action) {
+export function user(state = {}, action) {
   switch (action.type) {
-
     case types.USER_LOGIN:
-      return Object.assign({}, action.payload);
-
+      return { ...action.payload };
     case types.USER_LOGOUT:
-      return Object.assign({}, initialState);
-
+      return {};
     default:
       return state;
   }
