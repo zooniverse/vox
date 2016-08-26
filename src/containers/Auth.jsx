@@ -7,9 +7,9 @@ import AuthButton from '../components/AuthButton';
 
 class Auth extends Component {
 
-  componentDidMount() {
-    this.props.actions.checkLoginUser(this.props.user);
-  }
+//  componentDidMount() {
+//    this.props.actions.checkLoginUser(this.props.user);
+//  }
 
   render() {
     const { actions, user } = this.props;

@@ -2,18 +2,35 @@ import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 import base from '../constants/base';
 import oauth from 'panoptes-client/lib/oauth';
+import apiClient from 'panoptes-client/lib/api-client';
 
 // References for our Firebase listener
 let userListener;
 let userRef;
 
-export function checkLoginUser() {
+
+
+
+export function login() {
   return (dispatch) => {
-    firebase.auth().onAuthStateChanged(user => {
-      user
-        ? dispatch(setLoginUser(user))
-        : console.log('User not logged in')
-    })
+    oauth.checkCurrent()
+      .then(user => {
+        console.log('U S E R: ', user)
+        const panoptesUser = user.login;
+        if (panoptesUser) {
+          firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+              dispatch(setLoginUser(user))
+            } else {
+              console.log('User not logged in Firebase')
+              firebaseLogin(panoptesUser)
+            }
+          })
+        } else {
+          console.log('User not logged in Panoptes')
+          panoptesLogin()
+        }
+      });
   }
 }
 
@@ -36,34 +53,44 @@ function setLoginUser(user) {
   }
 }
 
-export function login() {
-  return (dispatch) => {
-    let token = "get-token-from-the-service-to-be-built";
-    if (token) {
-      console.log('token: ', token);
-      return firebase.auth().signInWithCustomToken(token)
-        .then(data => {
-          // Check if we have an error object back
-          if (data.code) {
-            Promise.reject(data);
-          } else {
-            dispatch(setLoginUser(data))
-          }
-        })
-        .catch(function(error) {
-          console.log('error.code: ', error.code);
-          console.log('error.message: ', error.message);
-        });
-    } else {
-      dispatch(panoptesLogin())
-      console.log('undefined token: ', token);
-    }
-
-
-
-  }
+function getFirebaseToken(apiToken) {
+  return fetch('http://localhost:8000/validate?token=' + apiToken, {
+    method: 'GET',
+    mode: 'cors',
+    headers: new Headers({
+        'Content-Type': 'application/json'
+      })
+    })
+    .then(response =>  response.json())
+    .then(json => json.token)
+    .catch(response => console.error('ERROR: ', response));
 }
-export function panoptesLogin() {
+
+function firebaseLogin(username) {
+    console.log('firebaseLogin()')
+    getFirebaseToken(username)
+      .then(token => {
+        if (token) {
+          return firebase.auth().signInWithCustomToken(token)
+            .then(data => {
+              // Check if we have an error object back
+              if (data.code) {
+                Promise.reject(data);
+              } else {
+                dispatch(setLoginUser(data))
+              }
+            })
+            .catch(function(error) {
+              console.log('error.code: ', error.code);
+              console.log('error.message: ', error.message);
+            });
+        } else {
+          console.error('undefined token: ', token);
+        }
+      })
+}
+
+function panoptesLogin() {
   return (dispatch) => {
     oauth.signIn(base.panoptesReturnUrl);
   }
