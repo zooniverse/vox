@@ -64,7 +64,8 @@ function firebaseLogin(apiToken) {
 }
 
 function setFirebaseUserDisplayname(panoptesDisplayName) {
-  firebase.auth().onAuthStateChanged((user) => {
+  return (dispatch, getState) => {
+    const { user } = getState();
     if (user) {
       user.updateProfile({
         displayName: panoptesDisplayName,
@@ -74,7 +75,7 @@ function setFirebaseUserDisplayname(panoptesDisplayName) {
         console.log('Error:', error);
       });
     }
-  });
+  };
 }
 
 function panoptesLogin() {
