@@ -10,9 +10,8 @@ const _pluckIssueProps = issue => ({
   votes: 0,
 });
 
-
 export function fetchIssuesFromGH() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: types.REQUEST_ISSUES_GH,
     });

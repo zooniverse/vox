@@ -28,7 +28,7 @@ export function issues(state = initialState, action) {
     case types.UPDATE_VOTE_COUNT:
       return {
         ...state,
-        data: state.data.map(issue => {
+        data: state.data.map((issue) => {
           const updatedIssue = action.payload;
           return {
             ...issue,

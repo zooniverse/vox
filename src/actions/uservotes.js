@@ -11,7 +11,6 @@ export function toggleVote(issueId) {
     if (user.uid) {
       userRef = firebase.database().ref(`users/${ user.uid }`);
       issueRef = firebase.database().ref(`issues/${ issueId }`);
-
       if (!userVotes[issueId]) {
         userRef.child(`/votes/${ issueId }`).set(true);
         dispatch({

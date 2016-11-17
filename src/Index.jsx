@@ -9,6 +9,7 @@ import base from './constants/base';
 import oauth from 'panoptes-client/lib/oauth';
 
 import configureStore from './store';
+
 const store = configureStore();
 
 // Todo: let's find a better way to include Styles,
@@ -27,6 +28,6 @@ oauth.init(base.panoptesAppId)
           </Route>
         </Router>
       </Provider>
-      , document.getElementById('root')
+      , document.getElementById('root'),
     );
   });
