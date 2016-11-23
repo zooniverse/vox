@@ -31,10 +31,11 @@ function setLoginUser(user) {
 
 function getFirebaseToken(token) {
 //  don't hard code the endpoint
-  return fetch('http://localhost:8080/validate?token=' + token, {
-    method: 'GET',
+  return fetch('http://localhost:8080/validate', {
+    method: 'POST',
     mode: 'cors',
     headers: new Headers({
+      'Authorization': token,
       'Content-Type': 'application/json',
     }),
   })
