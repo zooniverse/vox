@@ -7,7 +7,6 @@ import oauth from 'panoptes-client/lib/oauth';
 let userListener;
 let userRef;
 
-
 function setLoginUser(user) {
   return dispatch => {
     dispatch({
@@ -35,7 +34,7 @@ function getFirebaseToken(token) {
     method: 'POST',
     mode: 'cors',
     headers: new Headers({
-      'Authorization': token,
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/json',
     }),
   })
