@@ -29,8 +29,7 @@ function setLoginUser(user) {
 
 
 function getFirebaseToken(token) {
-//  don't hard code the endpoint
-  return fetch('http://localhost:8080/validate', {
+  return fetch('https://firebase-token-generator.zooniverse.org/validate', {
     method: 'POST',
     mode: 'cors',
     headers: new Headers({
