@@ -12,6 +12,15 @@ class Auth extends Component {
     actions.checkLoginUser(user);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { user } = this.props;
+    if (user.displayName !== nextProps.user.displayName) {
+      this.setState({
+        user: nextProps.user,
+      });
+    }
+  }
+
   render() {
     const { actions, user } = this.props;
     const text = (user && (user.displayName)) ? `Logout ${user.displayName}` : 'Login';

@@ -15,7 +15,7 @@ function setLoginUser(user) {
     });
     if (user) {
       userRef = firebase.database().ref(`users/${user.uid}`);
-      userListener = userRef.on('value', dataSnapshot => {
+      userListener = userRef.on('value', (dataSnapshot) => {
         console.info('Updating userVotes object...');
         const voteData = dataSnapshot.child('votes').val();
         dispatch({
@@ -42,17 +42,39 @@ function getFirebaseToken(token) {
   .catch(error => console.error('ERROR: ', error));
 }
 
+function setFirebaseUserDisplayname(fbUser) {
+  return (dispatch) => {
+    if (!fbUser.displayName) {
+      oauth.checkCurrent()
+        .then((user) => {
+          fbUser.updateProfile({
+            displayName: user.display_name,
+          }).then(() => {
+            console.log('Firebase displayName set.');
+          }, (error) => {
+            console.log('Error:', error);
+          });
+        })
+        .catch((response) => {
+          console.log('Failed to get user:', response);
+        });
+    }
+  };
+}
+
+
 function firebaseLogin(apiToken) {
   return (dispatch) => {
     getFirebaseToken(apiToken)
-      .then(firebaseToken => {
+      .then((firebaseToken) => {
         if (firebaseToken) {
           firebase.auth().signInWithCustomToken(firebaseToken)
-            .then(userData => {
+            .then((userData) => {
               dispatch(setLoginUser(userData));
+              dispatch(setFirebaseUserDisplayname(userData));
               console.log('Firebase login successful.');
             })
-            .catch(error => {
+            .catch((error) => {
               console.log('error: ', error);
             });
         } else {
@@ -62,20 +84,6 @@ function firebaseLogin(apiToken) {
   };
 }
 
-function setFirebaseUserDisplayname(panoptesDisplayName) {
-  return (dispatch, getState) => {
-    const { user } = getState();
-    if (user) {
-      user.updateProfile({
-        displayName: panoptesDisplayName,
-      }).then(() => {
-        console.log('Firebase displayName set.');
-      }, (error) => {
-        console.log('Error:', error);
-      });
-    }
-  };
-}
 
 function panoptesLogin() {
   return oauth.signIn(base.panoptesReturnUrl);
@@ -92,15 +100,15 @@ export function login() {
 }
 
 export function checkLoginUser() {
+  console.log('checkin login user');
   return (dispatch) => {
     oauth.checkCurrent()
-      .then(user => {
-        if (user) {
-          setFirebaseUserDisplayname(user.display_name);
-          dispatch(setLoginUser(user));
-          dispatch(login());
-        }
-      });
+    .then((user) => {
+      if (user) {
+        dispatch(setLoginUser(user));
+        dispatch(login());
+      }
+    });
   };
 }
 
