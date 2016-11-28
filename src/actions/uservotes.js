@@ -8,8 +8,8 @@ let userRef;
 export function toggleVote(issueId) {
   return (dispatch, getState) => {
     const { user, userVotes } = getState();
-    if (user.uid) {
-      userRef = firebase.database().ref(`users/${ user.uid }`);
+    if (user.firebase.uid) {
+      userRef = firebase.database().ref(`users/${ user.firebase.uid }`);
       issueRef = firebase.database().ref(`issues/${ issueId }`);
       if (!userVotes[issueId]) {
         userRef.child(`/votes/${ issueId }`).set(true);

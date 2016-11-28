@@ -30,9 +30,9 @@ class Issue extends Component {
       <div key={ item.id } className="cf mb4">
         <VoteCounter
           count={ item.votes }
-          isActive={ (userVotes[item.id] && user.uid) ? userVotes[item.id] : false }
+          isActive={ (userVotes[item.id] && user.firebase.uid) ? userVotes[item.id] : false }
           handleVotes={ handleVotes }
-          user={ user }
+          user={ user.firebase }
         />
         <div className="fl w-80">
           <h2 className="mt0 mb1 f3">

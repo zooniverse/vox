@@ -10,20 +10,9 @@ let userRef;
 function setLoginUser(user) {
   return dispatch => {
     dispatch({
-      type: types.USER_LOGIN,
+      type: types.USER_LOGIN_PANOPTES,
       payload: user,
     });
-    if (user) {
-      userRef = firebase.database().ref(`users/${user.uid}`);
-      userListener = userRef.on('value', (dataSnapshot) => {
-        console.info('Updating userVotes object...');
-        const voteData = dataSnapshot.child('votes').val();
-        dispatch({
-          type: types.USERVOTES_ADD,
-          payload: voteData,
-        });
-      });
-    }
   };
 }
 
@@ -62,7 +51,6 @@ function setFirebaseUserDisplayname(fbUser) {
   };
 }
 
-
 function firebaseLogin(apiToken) {
   return (dispatch) => {
     getFirebaseToken(apiToken)
@@ -70,7 +58,21 @@ function firebaseLogin(apiToken) {
         if (firebaseToken) {
           firebase.auth().signInWithCustomToken(firebaseToken)
             .then((userData) => {
-              dispatch(setLoginUser(userData));
+              if (userData) {
+                userRef = firebase.database().ref(`users/${userData.uid}`);
+                userListener = userRef.on('value', (dataSnapshot) => {
+                  console.info('Updating userVotes object...');
+                  const voteData = dataSnapshot.child('votes').val();
+                  dispatch({
+                    type: types.USERVOTES_ADD,
+                    payload: voteData,
+                  });
+                });
+              }
+              dispatch({
+                type: types.USER_LOGIN_FIREBASE,
+                payload: userData,
+              });
               dispatch(setFirebaseUserDisplayname(userData));
               console.log('Firebase login successful.');
             })
@@ -100,7 +102,6 @@ export function login() {
 }
 
 export function checkLoginUser() {
-  console.log('checkin login user');
   return (dispatch) => {
     oauth.checkCurrent()
     .then((user) => {

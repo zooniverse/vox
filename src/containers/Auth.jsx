@@ -12,19 +12,10 @@ class Auth extends Component {
     actions.checkLoginUser(user);
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { user } = this.props;
-    if (user.displayName !== nextProps.user.displayName) {
-      this.setState({
-        user: nextProps.user,
-      });
-    }
-  }
-
   render() {
     const { actions, user } = this.props;
-    const text = (user && (user.displayName)) ? `Logout ${user.displayName}` : 'Login';
-    const action = (user && (user.displayName)) ? actions.logout : actions.login;
+    const text = (user.panoptes && (user.panoptes.display_name)) ? `Logout ${user.panoptes.display_name}` : 'Login';
+    const action = (user.panoptes && (user.panoptes.display_name)) ? actions.logout : actions.login;
     return <AuthButton text={text} action={action} />;
   }
 }
@@ -35,7 +26,10 @@ Auth.propTypes = {
 };
 
 Auth.defaultProps = {
-  user: {},
+  user: {
+    firebase: {},
+    panoptes: {},
+  },
 };
 
 function mapStateToProps(state) {
