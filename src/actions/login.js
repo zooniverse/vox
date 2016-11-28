@@ -26,9 +26,9 @@ function getFirebaseToken(token) {
       'Content-Type': 'application/json',
     }),
   })
-  .then(response => response.json())
-  .then(json => json.token)
-  .catch(error => console.error('ERROR: ', error));
+    .then(response => response.json())
+    .then(json => json.token)
+    .catch(error => console.error('ERROR: ', error));
 }
 
 function setFirebaseUserDisplayname(fbUser) {
@@ -58,17 +58,15 @@ function firebaseLogin(apiToken) {
         if (firebaseToken) {
           firebase.auth().signInWithCustomToken(firebaseToken)
             .then((userData) => {
-              if (userData) {
-                userRef = firebase.database().ref(`users/${userData.uid}`);
-                userListener = userRef.on('value', (dataSnapshot) => {
-                  console.info('Updating userVotes object...');
-                  const voteData = dataSnapshot.child('votes').val();
-                  dispatch({
-                    type: types.USERVOTES_ADD,
-                    payload: voteData,
-                  });
+              userRef = firebase.database().ref(`users/${userData.uid}`);
+              userListener = userRef.on('value', (dataSnapshot) => {
+                console.info('Updating userVotes object...');
+                const voteData = dataSnapshot.child('votes').val();
+                dispatch({
+                  type: types.USERVOTES_ADD,
+                  payload: voteData,
                 });
-              }
+              });
               dispatch({
                 type: types.USER_LOGIN_FIREBASE,
                 payload: userData,
@@ -105,10 +103,8 @@ export function checkLoginUser() {
   return (dispatch) => {
     oauth.checkCurrent()
     .then((user) => {
-      if (user) {
-        dispatch(setLoginUser(user));
-        dispatch(login());
-      }
+      dispatch(setLoginUser(user));
+      dispatch(login());
     });
   };
 }
