@@ -58,8 +58,8 @@ module.exports = {
             'es2015',
             'react',
             'stage-0',
-          ]
-        }
+          ],
+        },
       },
       {
         test: /\.json$/,

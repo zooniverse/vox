@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import * as loginActions from '../actions/login';
 
 import AuthButton from '../components/AuthButton';
@@ -14,29 +14,33 @@ class Auth extends Component {
 
   render() {
     const { actions, user } = this.props;
-    const text = (user && user.displayName) ? `Logout ${ user.displayName }` : 'Login';
-    const action = (user && user.displayName) ? actions.logout : actions.login;
-    return <AuthButton text={ text } action={ action } />
+    const text = (user.panoptes && (user.panoptes.display_name)) ? `Logout ${user.panoptes.display_name}` : 'Login';
+    const action = (user.panoptes && (user.panoptes.display_name)) ? actions.logout : actions.login;
+    return <AuthButton text={text} action={action} />;
   }
 }
 
 Auth.propTypes = {
-  user: PropTypes.object,
+  actions: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 Auth.defaultProps = {
-  user: {},
+  user: {
+    firebase: {},
+    panoptes: {},
+  },
 };
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(loginActions, dispatch)
+    actions: bindActionCreators(loginActions, dispatch),
   };
 }
 

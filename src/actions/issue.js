@@ -1,7 +1,5 @@
-import { browserHistory } from 'react-router';
 import fetch from 'isomorphic-fetch';
 import * as types from '../constants/actionTypes';
-import firebase from 'firebase';
 
 
 const _pluckIssueProps = issue => ({
@@ -13,11 +11,11 @@ const _pluckIssueProps = issue => ({
 });
 
 export function fetchIssuesFromGH() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: types.REQUEST_ISSUES_GH,
     });
-    return fetch('https://api.github.com/repos/zooniverse/wildcam-gorongosa-education/issues?labels=education-api')
+    return fetch('https://api.github.com/repos/zooniverse/vox/issues?labels=help+wanted')
       .then(response => response.json())
       .then(array => dispatch({
         type: types.RECEIVE_ISSUES_SUCCESS_GH,
@@ -27,7 +25,7 @@ export function fetchIssuesFromGH() {
         type: types.RECEIVE_ISSUES_ERROR_GH,
         payload: response,
       }));
-  }
+  };
 }
 
 export function updateIssueVoteCount(id, votes) {
@@ -36,6 +34,6 @@ export function updateIssueVoteCount(id, votes) {
     payload: {
       id,
       votes,
-    }
+    },
   });
 }

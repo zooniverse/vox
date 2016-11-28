@@ -3,16 +3,14 @@ import firebase from 'firebase';
 
 // References for our Firebase listener
 let issueRef;
-let userListener;
 let userRef;
 
 export function toggleVote(issueId) {
   return (dispatch, getState) => {
     const { user, userVotes } = getState();
-    if (user.uid) {
-      userRef = firebase.database().ref(`users/${ user.uid }`);
+    if (user.firebase.uid) {
+      userRef = firebase.database().ref(`users/${ user.firebase.uid }`);
       issueRef = firebase.database().ref(`issues/${ issueId }`);
-
       if (!userVotes[issueId]) {
         userRef.child(`/votes/${ issueId }`).set(true);
         dispatch({
@@ -23,12 +21,12 @@ export function toggleVote(issueId) {
         issueRef.once('value', dataSnapshot =>
           issueRef.child('vote_count').set(dataSnapshot.val().vote_count + 1));
 
-        console.log('Vote added successfully')
+        console.log('Vote added successfully');
       } else {
         userRef.child(`/votes/${ issueId }`).remove();
         dispatch({
           type: types.USERVOTES_REMOVE,
-          payload: issueId
+          payload: issueId,
         });
 
         issueRef.once('value', dataSnapshot =>
@@ -36,6 +34,5 @@ export function toggleVote(issueId) {
         console.log('Vote removed successfully');
       }
     }
-  }
+  };
 }
-

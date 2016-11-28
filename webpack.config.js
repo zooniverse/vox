@@ -30,7 +30,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('staging'),
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
   ],
 
@@ -61,8 +61,8 @@ module.exports = {
             'es2015',
             'react',
             'stage-0',
-          ]
-        }
+          ],
+        },
       },
       {
         test: /\.(jpg|png|gif|otf|eot|svg|ttf|woff\d?)$/,

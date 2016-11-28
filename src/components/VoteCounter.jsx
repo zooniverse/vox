@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 
 const VoteCounter = ({ count, isActive, handleVotes, user }) => {
   const cssClasses = isActive
@@ -17,12 +17,13 @@ const VoteCounter = ({ count, isActive, handleVotes, user }) => {
       <p>{ count } votes</p>
     </div>
   );
-}
+};
 
 VoteCounter.propTypes = {
   count: PropTypes.number.isRequired,
   isActive: PropTypes.bool.isRequired,
-  handleVotes: PropTypes.func
+  handleVotes: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default VoteCounter;

@@ -1,5 +1,5 @@
-import { PropTypes } from 'react';
-import Issue from '../containers/Issue'
+import React, { PropTypes } from 'react';
+import Issue from '../containers/Issue';
 
 const IssueList = ({ issues, actions }) => {
   const list = (issues.data.length > 0) ? issues.data : [];
@@ -14,7 +14,7 @@ const IssueList = ({ issues, actions }) => {
       ) }
     </div>
   );
-}
+};
 
 IssueList.propTypes = {
   actions: PropTypes.object.isRequired,
