@@ -22,9 +22,11 @@
   ],
   "scripts": {
     "start": "babel-node server.js",
-    "test": "",
     "eslint": "eslint .",
-    "build": "webpack --config webpack.production.config.js -p"
+    "_build": "webpack --config webpack.production.config.js -p",
+    "_deploy": "export PATH_ROOT=vote.zooniverse.org; npm run _build && npm run _publish",
+    "_publish": "publisssh ./dist \"zooniverse-static/$PATH_ROOT/$SUBDIR\"",
+    "deploy": "export NODE_ENV=production; npm run _deploy"
   },
   "author": "Zooniverse",
   "license": "Apache-2.0",
@@ -74,6 +76,7 @@
     "mocha": "^3.1.2",
     "nib": "^1.1.0",
     "panoptes-client": "^2.2.1",
+    "publisssh": "^1.1.0",
     "rimraf": "^2.4.3",
     "stats-webpack-plugin": "^0.4.2",
     "style-loader": "^0.13.0",
