@@ -103,8 +103,10 @@ export function checkLoginUser() {
   return (dispatch) => {
     oauth.checkCurrent()
     .then((user) => {
-      dispatch(setLoginUser(user));
-      dispatch(login());
+      if (user) {
+        dispatch(setLoginUser(user));
+        dispatch(login());
+      };
     });
   };
 }
