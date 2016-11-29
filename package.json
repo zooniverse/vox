@@ -27,7 +27,7 @@
     "_deploy": "export PATH_ROOT=vote.zooniverse.org; npm run _build && npm run _publish",
     "_publish": "publisssh ./dist \"zooniverse-static/$PATH_ROOT/$SUBDIR\"",
     "deploy": "export NODE_ENV=production; npm run _deploy",
-    "deploy-preview": "npm run _build && publisssh dist zooniverse-static/preview.zooniverse.org/voting-app",
+    "deploy-preview": "npm run _build && publisssh dist zooniverse-static/preview.zooniverse.org/voting-app"
   },
   "author": "Zooniverse",
   "license": "Apache-2.0",
