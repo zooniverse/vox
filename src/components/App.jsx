@@ -3,8 +3,9 @@ import Auth from '../containers/Auth';
 
 import firebase from 'firebase';
 import base from '../constants/base';
+import config from '../constants/config';
 
-firebase.initializeApp(base);
+firebase.initializeApp(config.firebase);
 
 class App extends React.Component {
   render() {
@@ -17,7 +18,7 @@ class App extends React.Component {
             VoX
           </h1>
           <nav className="db dtc-ns v-mid w-100 w-75-ns tc tr-ns">
-            <Auth base={ base } />
+            <Auth base={ config.firebase } />
           </nav>
         </header>
 

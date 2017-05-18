@@ -1,6 +1,7 @@
 import * as types from '../constants/actionTypes';
 import firebase from 'firebase';
 import base from '../constants/base';
+import config from '../constants/config';
 import oauth from 'panoptes-client/lib/oauth';
 
 // References for our Firebase listener
@@ -18,7 +19,7 @@ function setLoginUser(user) {
 
 
 function getFirebaseToken(token) {
-  return fetch('https://firebase-token-generator.zooniverse.org/validate', {
+  return fetch(config.serverAppHost + '/validate', {
     method: 'POST',
     mode: 'cors',
     headers: new Headers({
@@ -86,7 +87,7 @@ function firebaseLogin(apiToken) {
 
 
 function panoptesLogin() {
-  return oauth.signIn(base.panoptesReturnUrl);
+  return oauth.signIn(config.appHost);
 }
 
 export function login() {
