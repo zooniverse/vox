@@ -19,7 +19,7 @@ function setLoginUser(user) {
 
 
 function getFirebaseToken(token) {
-  return fetch('https://firebase-token-generator.zooniverse.org/validate', {
+  return fetch(config.serverAppHost + '/validate', {
     method: 'POST',
     mode: 'cors',
     headers: new Headers({
